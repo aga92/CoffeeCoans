@@ -24,7 +24,12 @@ describe 'About Applying What We Have Learnt', ->
     # FILL_ME_IN solution goes in here
     # HINT: one way of doing this would be a 'for in when' construct using sum and
     # filter functions, the existential operator is also useful
-    (expect findNeedle(operations)).toBe(FILL_ME_IN)
+    isInvalid = (operation) ->
+      return operation.direction == 'FWD' && operation.distance > 100
+    findNeedle = (ops) ->
+      invalidOps = ops.filter isInvalid
+      return invalidOps?
+    (expect findNeedle(operations)).toBe(true)
 
 
   it 'should add all the natural numbers below 1000 that are multiples of 3 or 5 (imperative)', ->
@@ -32,14 +37,18 @@ describe 'About Applying What We Have Learnt', ->
     for i in [1..1000]
       if (i % 3 == 0 || i % 5 == 0)
         total += i
-    expect(total).toBe(FILL_ME_IN)
+    expect(total).toBe(234168)
 
 
   it 'should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)', ->
     # FILL_ME_IN solution goes in here
     # HINT: one way of doing this would be a 'for in when' construct using sum and
     # filter functions
-    (expect FILL_ME_IN).toBe(234168)
+    isDivisibleBy3Or5 = (num) ->
+      return (num % 3 == 0 || num % 5 == 0)
+    sum = (i, a) -> i + a
+    mySum = ([1..1000].filter isDivisibleBy3Or5).reduce sum
+    (expect mySum).toBe(234168)
 
 
   it 'should find the sum of all the even valued terms in the fibonacci sequence which do not exceed four million (imperative)', ->
@@ -54,26 +63,55 @@ describe 'About Applying What We Have Learnt', ->
       if (currentFib % 2 == 0)
         sum += currentFib
       i+=1
-
-    expect(sum).toBe(FILL_ME_IN)
+    expect(sum).toBe(4613732)
 
 
   it 'should find the sum of all the even valued terms in the fibonacci sequence which do not exceed four million (functional)', ->
     # FILL_ME_IN solution goes in here
     # HINT: one way of doing this would be to construct an array of Fibonacci numbers
     # using a function and a while loop, and then to filter it using an even function
-    expect(FILL_ME_IN).toBe(4613732)
+    fib0 = 0
+    fib1 = 1
+    fib2 = 1
+    next_fib = ->
+      fib0 = fib1
+      fib1 = fib2
+      fib2 = fib0 + fib1
+      return fib1
+    fibb = (next_fib() while fib2<4000000)
+    mySum = (fibb.filter (num)-> num%2==0).reduce (i, a)->i+a
+    expect(mySum).toBe(4613732)
+    
 
-
-###
-# UNCOMMENT FOR EXTRA CREDIT
+# UNCOMMENT FOR EXTRA CREDIT  
   it 'should find the largest prime factor of a composite number', ->
-
+    lpf = (myNumber) ->
+      i = 2
+      while myNumber>1
+        if(myNumber % i == 0)
+          myNumber = myNumber / i
+        else i = i+1
+      return i
+    expect(lpf(90720)).toBe(7)
+    
   it 'should find the largest palindrome made from the product of two 3 digit numbers', ->
+    isPalindrome = (num) ->
+       myString = num.toString()
+       revString = myString.split("").reverse().join ""
+       return myString == revString
+    palindrome = ->
+      max_pal = 0
+      for num1 in [100..999]
+        for num2 in [100..999]
+          prod = num1 * num2
+          if(prod > max_pal && isPalindrome(prod))
+            max_pal = prod
+      return max_pal
+    expect(palindrome()).toBe(906609)
+  
+#  it 'should what is the smallest number divisible by each of the numbers 1 to 20', ->
 
-  it 'should what is the smallest number divisible by each of the numbers 1 to 20', ->
+#  it 'should what is the difference between the sum of the squares and the square of the sums', ->
 
-  it 'should what is the difference between the sum of the squares and the square of the sums', ->
+#  it 'should find the 10001st prime', ->
 
-  it 'should find the 10001st prime', ->
-###
