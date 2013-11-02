@@ -17,7 +17,7 @@ describe 'About Applying What We Have Learnt', ->
           break
       return hasInvalidOperation
 
-    expect(findNeedle(operations)).toBe(FILL_ME_IN)
+    expect(findNeedle(operations)).toBe(true)
 
 
   it 'should find needle in a haystack (functional)', ->
